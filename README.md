@@ -1,4 +1,6 @@
-# AllergenPhobe
+# AllergenBuster
+
+[![logo-size.jpg](https://i.postimg.cc/fTMF2MTj/logo-size.jpg)](https://postimg.cc/JtdPtVXG)
 
 ## Your vigilant ally in avoiding allergens, empowering you to navigate the world with confidence and steer clear of potential allergic threats.
 
