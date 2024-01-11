@@ -1,4 +1,4 @@
-# AllergenPhobe
+# AllergenBuster
 
 ## Your vigilant ally in avoiding allergens, empowering you to navigate the world with confidence and steer clear of potential allergic threats.
 
