@@ -6,7 +6,7 @@
 
 ### Prevention:
 
-* Scan food items before purchasing to check for potential allergens
-* Alert users about nutritional values of food items
-* Allow users to create their personal allergen profile 
-* Wide dataset of food items using openfoodfacts API
+- Scan food items before purchasing to check for potential allergens
+- Alert users about nutritional values of food items
+- Allow users to create their personal allergen profile
+- Wide dataset of food items using openfoodfacts API
