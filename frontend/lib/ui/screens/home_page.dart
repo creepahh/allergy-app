@@ -2,8 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter_onboarding/constants.dart';
 import 'package:flutter_onboarding/models/plants.dart';
 import 'package:flutter_onboarding/ui/screens/detail_page.dart';
+import 'package:flutter_onboarding/ui/screens/signin_page.dart';
 import 'package:flutter_onboarding/ui/screens/widgets/plant_widget.dart';
+import 'package:flutter_onboarding/util/ip_address.dart';
 import 'package:page_transition/page_transition.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+
+import '../../util/ip_address.dart';
+
+var emaila;
+
+class WidgetB {
+  static late Function(String) setEmail = (String email) {};
+
+  // Other WidgetB code...
+
+  // Example function that uses the email received from SignIn
+  static void someFunction(String email) {
+    print("Email received in WidgetB: $email");
+  }
+}
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -21,7 +40,6 @@ class _HomePageState extends State<HomePage> {
     // Create an async function to fetch and populate _plantList
     List<Food> _plantList = [];
 
-    // Make sure to call the async function correctly
     void fetchData() async {
       String userEmail = 'dummy';
       _plantList = await Food.fetchFoods(userEmail);
@@ -39,10 +57,29 @@ class _HomePageState extends State<HomePage> {
       'Supplement',
     ];
 
-    //Toggle Favorite button
-    bool toggleIsFavorated(bool isFavorited) {
-      return !isFavorited;
+    Future<void> fetchUserAllergy(String email) async {
+      String apiUrl = "http://${Globals.ipAddress}:8000/api/user_info/";
+
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{'email': email}),
+      );
+
+      if (response.statusCode == 201) {
+        // Parse the JSON response
+        final Map<String, dynamic> responseData = json.decode(response.body);
+
+        print("Response Object: $responseData");
+      } else {
+        print("Failed to register user. Status code: ${response.statusCode}");
+        // Handle registration failure as needed
+      }
     }
+
+    fetchUserAllergy("niajh.edd@gmail.com");
 
     return Scaffold(
         body: SingleChildScrollView(
@@ -90,6 +127,7 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           ),
+          //allergens avatar
           SizedBox(
             height: size.height * .1,
             child: ListView.builder(

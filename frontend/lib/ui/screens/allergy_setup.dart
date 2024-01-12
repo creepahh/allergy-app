@@ -1,10 +1,12 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_onboarding/util/ip_address.dart';
 
 import 'package:http/http.dart' as http;
 
 import '../root_page.dart';
+import '../../util/ip_address.dart';
 
 class Allergy {
   String name;
@@ -19,6 +21,8 @@ class Allergy {
 }
 
 class AllergySelectionPage extends StatefulWidget {
+  final String email;
+  AllergySelectionPage(this.email);
   @override
   _AllergySelectionPageState createState() => _AllergySelectionPageState();
 }
@@ -129,25 +133,27 @@ class _AllergySelectionPageState extends State<AllergySelectionPage> {
                       child: ElevatedButton(
                         child: const Text('Apply'),
                         onPressed: () async {
-                          const apiUrl =
-                              "http://192.168.1.9:8000/api/user_allergens/";
+                          String apiUrl =
+                              "http://${Globals.ipAddress}:8000/api/user_allergens/";
 
                           final response = await http.post(
                             Uri.parse(apiUrl),
                             headers: <String, String>{
                               'Content-Type': 'application/json; charset=UTF-8',
                             },
-                            body: jsonEncode(selectedAllergies
-                                .map((allergy) => allergy.name)
-                                .toList()),
+                            body: jsonEncode({
+                              'email': widget.email,
+                              'allergies': selectedAllergies
+                                  .map((allergy) => allergy.name)
+                                  .toList(),
+                            }),
                           );
 
                           if (response.statusCode == 201) {
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                builder: (context) =>
-                                    RootPage(), // Replace with the actual new page
+                                builder: (context) => const RootPage(),
                               ),
                             );
                           } else {

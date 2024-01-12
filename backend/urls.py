@@ -8,5 +8,6 @@ urlpatterns = [
     path('api/signin/', views.signin, name='signin'),
     path('api/user_allergens/', views.allergens, name='allergens_info'),
     path('products/user/email/<str:email>/', views.user_products_by_email, name='user_products_by_email'),
+    path('api/user_info/', views.get_user_detail)
 ]
 

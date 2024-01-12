@@ -9,6 +9,7 @@ import 'package:page_transition/page_transition.dart';
 import 'allergy_setup.dart';
 
 import 'package:http/http.dart' as http;
+import '../../util/ip_address.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
@@ -75,7 +76,9 @@ class _SignUpState extends State<SignUp> {
                     // Show an error message or handle validation as needed
                     return;
                   }
-                  const apiUrl = "http://192.168.1.9:8000/api/signup/";
+
+                  String apiUrl =
+                      "http://${Globals.ipAddress}:8000/api/signup/";
 
                   final response = await http.post(
                     Uri.parse(apiUrl),
@@ -94,7 +97,8 @@ class _SignUpState extends State<SignUp> {
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => AllergySelectionPage(),
+                        builder: (context) =>
+                            AllergySelectionPage(emailController.text),
                       ),
                     );
                   } else {

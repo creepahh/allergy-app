@@ -1,5 +1,5 @@
 # openfood/views.py
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, renderer_classes
 from django.contrib.auth import authenticate, login  
 from rest_framework.response import Response
 import requests
@@ -12,8 +12,9 @@ from django.contrib.auth.models import User
 
 from django.contrib.auth.decorators import login_required
 
-from .serializers import ProductSerializer
+from .serializers import ProductSerializer, UserAllergySerializer
 from django.shortcuts import get_object_or_404
+from rest_framework.renderers import JSONRenderer
 
 import random
 
@@ -90,8 +91,35 @@ def signin(request):
 def allergens(request):
     if request.method == 'POST':
         data = json.loads(request.body.decode('utf-8'))
+        email = data.get('email')
+        print(data)
+        allergen_names = data.get('allergies')
+        print(allergen_names)
+
+        user = get_object_or_404(User, email=email)
+
+        user_allergy, created = models.UserAllergy.objects.get_or_create(user=user)
+        allergens = [models.Allergens.objects.get_or_create(allergens_name=name)[0] for name in allergen_names]
+        user_allergy.allergen.set(allergens)
         
 
         return JsonResponse({'message': 'allergens detail received succesfully'}, status=201)
     else:
         return JsonResponse({'error': 'some error occured'}, status=400)
+
+@api_view(['POST'])
+@renderer_classes([JSONRenderer])  # Explicitly set the renderer
+def get_user_detail(request):
+    if request.method == 'POST':
+        data = json.loads(request.body.decode('utf-8'))
+        email = data.get('email')
+
+        try:
+            user_allergy = models.UserAllergy.objects.get(user__email=email)
+            serializer = UserAllergySerializer(user_allergy)
+            return Response(serializer.data, status=201)
+        except models.UserAllergy.DoesNotExist:
+            return JsonResponse({'error': 'User allergy information not found for the given email'}, status=404)
+        
+    else:
+        return JsonResponse({'error': 'Invalid request method'}, status=400)

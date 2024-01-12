@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 import json
+from django.utils.timezone import now
 
 class Allergens(models.Model):
     allergens_name = models.CharField( max_length=100)
@@ -14,11 +15,11 @@ class Allergens(models.Model):
         return []
 
     def __str__(self):
-        return self.name
+        return self.allergens_name
 
 class UserAllergy(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    allergen = models.ForeignKey(Allergens, on_delete=models.CASCADE)
+    allergen = models.ManyToManyField(Allergens)
 
 
     def __str__(self):  
@@ -34,8 +35,8 @@ class Product(models.Model):
     brand = models.CharField(max_length=50),
     status = models.BooleanField(default=False)
     allergens = models.ManyToManyField(Allergens)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, default=1)
+    created_at = models.DateTimeField(default=now, editable=False)
     # image_url = models.URLField(blank=True, null=True)
     
 
