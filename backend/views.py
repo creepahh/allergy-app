@@ -11,6 +11,8 @@ from django.contrib.auth.models import User
 
 from django.contrib.auth.decorators import login_required
 
+import random
+
 
 @api_view(['GET'])
 def fetch_openfood_data(request, barcode):
@@ -43,8 +45,13 @@ def signup(request):
         email = data.get('email')
         full_name = data.get('full_name')
         password = data.get('password')
+        
+        random_integer = random.randint(1000, 9999) 
+        
+        username = f"{full_name.replace(' ', '_')}{random_integer}"
+        
         register_user = User.objects.create_user(
-                first_name= full_name , last_name="testcase", email=email, password=password)
+                first_name= full_name , last_name="testcase", email=email, password=password, username=username)
         
 
         return JsonResponse({'message': 'User registered successfully'}, status=201)
