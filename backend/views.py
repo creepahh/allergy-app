@@ -1,10 +1,15 @@
 # openfood/views.py
 from rest_framework.decorators import api_view
+from django.contrib.auth import authenticate, login  
 from rest_framework.response import Response
 import requests
 from django.views.decorators.csrf import csrf_exempt
 import json
 from django.http import JsonResponse
+
+from django.contrib.auth.models import User
+
+from django.contrib.auth.decorators import login_required
 
 
 @api_view(['GET'])
@@ -38,7 +43,9 @@ def signup(request):
         email = data.get('email')
         full_name = data.get('full_name')
         password = data.get('password')
-
+        register_user = User.objects.create_user(
+                first_name= full_name , last_name="testcase", email=email, password=password)
+        
 
         return JsonResponse({'message': 'User registered successfully'}, status=201)
     else:
@@ -50,9 +57,14 @@ def signin(request):
         data = json.loads(request.body.decode('utf-8'))
         email = data.get('email')
         password = data.get('password')
+        
+        user = authenticate(request, email=email, password=password)
+        
+        if user is None:
 
-
-        return JsonResponse({'message': 'User loggedin successfully'}, status=201)
+            return JsonResponse({'message': 'User loggedin successfully'}, status=201)
+        else:
+            return JsonResponse({'message': 'wrong crendentials'}, status=401)
     else:
         return JsonResponse({'error': 'Invalid request method'}, status=400)
 

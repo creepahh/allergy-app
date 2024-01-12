@@ -27,6 +27,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = [ '192.168.1.9']
 
+AUTHENTICATION_BACKENDS = ['backend.custom_auth_backend.EmailBackend']
+
 
 # Application definition
 
