@@ -24,7 +24,17 @@ class _DetailPageState extends State<DetailPage> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    List<Plant> _plantList = Plant.plantList;
+    // Create an async function to fetch and populate _plantList
+    List<Food> _plantList = [];
+
+    // Make sure to call the async function correctly
+    void fetchData() async {
+      String userEmail = 'dummy';
+      _plantList = await Food.fetchFoods(userEmail);
+    }
+
+    // Call the fetchData function
+    fetchData();
     return Scaffold(
       body: Stack(
         children: [
@@ -63,21 +73,18 @@ class _DetailPageState extends State<DetailPage> {
                       borderRadius: BorderRadius.circular(25),
                       color: Constants.primaryColor.withOpacity(.15),
                     ),
-                    child: IconButton(
-                        onPressed: () {
-                          setState(() {
-                            bool isFavorited = toggleIsFavorated(
-                                _plantList[widget.plantId].isFavorated);
-                            _plantList[widget.plantId].isFavorated =
-                                isFavorited;
-                          });
-                        },
-                        icon: Icon(
-                          _plantList[widget.plantId].isFavorated == true
-                              ? Icons.favorite
-                              : Icons.favorite_border,
-                          color: Constants.primaryColor,
-                        )),
+                    // child: IconButton(
+                    //     onPressed: () {
+                    //       setState(() {
+
+                    //       });
+                    //     },
+                    //     icon: Icon(
+                    //       _plantList[widget.plantId].isFavorated == true
+                    //           ? Icons.favorite
+                    //           : Icons.favorite_border,
+                    //       color: Constants.primaryColor,
+                    //     )),
                   ),
                 ),
               ],
@@ -224,18 +231,25 @@ class _DetailPageState extends State<DetailPage> {
             Container(
               height: 50,
               width: 50,
-              child: IconButton(onPressed: (){
-                setState(() {
-                  bool isSelected = toggleIsSelected(_plantList[widget.plantId].isSelected);
+              child: IconButton(
+                  onPressed: () {
+                    setState(() {
+                      bool isSelected = toggleIsSelected(
+                          _plantList[widget.plantId].isSelected);
 
-                  _plantList[widget.plantId].isSelected = isSelected;
-                });
-              }, icon: Icon(
-                Icons.shopping_cart,
-                color: _plantList[widget.plantId].isSelected == true ? Colors.white : Constants.primaryColor,
-              )),
+                      _plantList[widget.plantId].isSelected = isSelected;
+                    });
+                  },
+                  icon: Icon(
+                    Icons.shopping_cart,
+                    color: _plantList[widget.plantId].isSelected == true
+                        ? Colors.white
+                        : Constants.primaryColor,
+                  )),
               decoration: BoxDecoration(
-                  color: _plantList[widget.plantId].isSelected == true ? Constants.primaryColor.withOpacity(.5) : Colors.white,
+                  color: _plantList[widget.plantId].isSelected == true
+                      ? Constants.primaryColor.withOpacity(.5)
+                      : Colors.white,
                   borderRadius: BorderRadius.circular(50),
                   boxShadow: [
                     BoxShadow(

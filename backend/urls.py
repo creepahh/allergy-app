@@ -7,5 +7,6 @@ urlpatterns = [
     path('api/signup/', views.signup, name='signup'),
     path('api/signin/', views.signin, name='signin'),
     path('api/user_allergens/', views.allergens, name='allergens_info'),
+     path('products/user/email/<str:email>/', user_products_by_email, name='user_products_by_email'),
 ]
 

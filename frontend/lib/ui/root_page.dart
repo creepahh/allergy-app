@@ -15,9 +15,6 @@ class RootPage extends StatefulWidget {
 }
 
 class _RootPageState extends State<RootPage> {
-  List<Plant> favorites = [];
-  List<Plant> myCart = [];
-
   int _bottomNavIndex = 0;
 
   //List of the pages
@@ -99,11 +96,6 @@ class _RootPageState extends State<RootPage> {
           onTap: (index) {
             setState(() {
               _bottomNavIndex = index;
-              final List<Plant> favoritedPlants = Plant.getFavoritedPlants();
-              final List<Plant> addedToCartPlants = Plant.addedToCartPlants();
-
-              favorites = favoritedPlants;
-              myCart = addedToCartPlants.toSet().toList();
             });
           }),
     );

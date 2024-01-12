@@ -12,6 +12,9 @@ from django.contrib.auth.models import User
 
 from django.contrib.auth.decorators import login_required
 
+from .serializers import ProductSerializer
+from django.shortcuts import get_object_or_404
+
 import random
 
 
@@ -38,6 +41,13 @@ def fetch_openfood_data(request, barcode):
         return Response(f'{bar_code},{allergens}')
     else:
         return Response({'error': 'Failed to fetch data from Open Food Facts API'}, status=response.status_code)
+
+@api_view(['GET'])
+def user_products_by_email(request, email):
+    user = get_object_or_404(User, email=email)
+    user_products = models.Product.objects.filter(user=user).order_by('-created_at')[:10]
+    serializer = ProductSerializer(user_products, many=True)
+    return Response(serializer.data)  
 
 @csrf_exempt
 def signup(request):

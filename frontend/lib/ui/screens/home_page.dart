@@ -18,7 +18,17 @@ class _HomePageState extends State<HomePage> {
     int selectedIndex = 0;
     Size size = MediaQuery.of(context).size;
 
-    List<Plant> _plantList = Plant.plantList;
+    // Create an async function to fetch and populate _plantList
+    List<Food> _plantList = [];
+
+    // Make sure to call the async function correctly
+    void fetchData() async {
+      String userEmail = 'dummy';
+      _plantList = await Food.fetchFoods(userEmail);
+    }
+
+    // Call the fetchData function
+    fetchData();
 
     //Plants category
     List<String> _plantTypes = [
@@ -61,7 +71,7 @@ class _HomePageState extends State<HomePage> {
                           child: TextField(
                         showCursor: false,
                         decoration: InputDecoration(
-                          hintText: 'Search Plant',
+                          hintText: 'Search Food',
                           border: InputBorder.none,
                           focusedBorder: InputBorder.none,
                         ),
@@ -83,11 +93,10 @@ class _HomePageState extends State<HomePage> {
           SizedBox(
             height: size.height * .1,
             child: ListView.builder(
-              itemCount:
-                  _plantList.length, // Change this to your allergen list count
+              itemCount: _plantList.length, // Change this to your list count
               scrollDirection: Axis.horizontal,
               itemBuilder: (BuildContext context, int index) {
-                // Your allergen data model will be used here instead of _plantList
+                // Your data model will be used here instead of _plantList
                 return GestureDetector(
                   onTap: () {
                     // Handle the tap event
@@ -99,19 +108,10 @@ class _HomePageState extends State<HomePage> {
                     decoration: BoxDecoration(
                       shape:
                           BoxShape.circle, // This makes the container circular
-                      color: Constants.primaryColor.withOpacity(.8),
-                    ),
-                    child: Center(
-                      child: Text(
-                        // For example, display the first letter of the allergen
-                        _plantList[index]
-                            .plantName
-                            .substring(0, 1), // Use allergen name here
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      image: DecorationImage(
+                        image: AssetImage(_plantList[index]
+                            .imageURL), // Replace with the URL of your image
+                        fit: BoxFit.cover,
                       ),
                     ),
                   ),
@@ -142,8 +142,8 @@ class _HomePageState extends State<HomePage> {
                         Navigator.push(
                             context,
                             PageTransition(
-                                child: DetailPage(
-                                    plantId: _plantList[index].plantId),
+                                child:
+                                    DetailPage(plantId: _plantList[index].id),
                                 type: PageTransitionType.bottomToTop));
                       },
                       child: PlantWidget(index: index, plantList: _plantList));
