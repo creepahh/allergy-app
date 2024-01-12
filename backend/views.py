@@ -6,6 +6,7 @@ import requests
 from django.views.decorators.csrf import csrf_exempt
 import json
 from django.http import JsonResponse
+from . import models
 
 from django.contrib.auth.models import User
 
@@ -67,7 +68,7 @@ def signin(request):
         
         user = authenticate(request, email=email, password=password)
         
-        if user is None:
+        if user is not None:
 
             return JsonResponse({'message': 'User loggedin successfully'}, status=201)
         else:
@@ -79,7 +80,7 @@ def signin(request):
 def allergens(request):
     if request.method == 'POST':
         data = json.loads(request.body.decode('utf-8'))
-        print(data)
+        
 
         return JsonResponse({'message': 'allergens detail received succesfully'}, status=201)
     else:
