@@ -119,17 +119,16 @@ class _DetailPageState extends State<DetailPage> {
                         children: [
                           PlantFeature(
                             title: 'Size',
-                            plantFeature: _plantList[widget.plantId].size,
+                            plantFeature: _plantList[widget.plantId].name,
                           ),
                           PlantFeature(
                             title: 'Humidity',
                             plantFeature:
-                                _plantList[widget.plantId].humidity.toString(),
+                                _plantList[widget.plantId].id.toString(),
                           ),
                           PlantFeature(
                             title: 'Temperature',
-                            plantFeature:
-                                _plantList[widget.plantId].temperature,
+                            plantFeature: _plantList[widget.plantId].userEmail,
                           ),
                         ],
                       ),
@@ -165,7 +164,7 @@ class _DetailPageState extends State<DetailPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            _plantList[widget.plantId].plantName,
+                            _plantList[widget.plantId].name,
                             style: TextStyle(
                               color: Constants.primaryColor,
                               fontWeight: FontWeight.bold,
@@ -176,7 +175,7 @@ class _DetailPageState extends State<DetailPage> {
                             height: 10,
                           ),
                           Text(
-                            r'$' + _plantList[widget.plantId].price.toString(),
+                            r'$' + _plantList[widget.plantId].id.toString(),
                             style: TextStyle(
                               color: Constants.blackColor,
                               fontSize: 24.0,
@@ -188,7 +187,7 @@ class _DetailPageState extends State<DetailPage> {
                       Row(
                         children: [
                           Text(
-                            _plantList[widget.plantId].rating.toString(),
+                            _plantList[widget.plantId].id.toString(),
                             style: TextStyle(
                               fontSize: 30.0,
                               color: Constants.primaryColor,
@@ -208,7 +207,7 @@ class _DetailPageState extends State<DetailPage> {
                   ),
                   Expanded(
                     child: Text(
-                      _plantList[widget.plantId].decription,
+                      _plantList[widget.plantId].name,
                       textAlign: TextAlign.justify,
                       style: TextStyle(
                         height: 1.5,
@@ -232,24 +231,18 @@ class _DetailPageState extends State<DetailPage> {
               height: 50,
               width: 50,
               child: IconButton(
-                  onPressed: () {
-                    setState(() {
-                      bool isSelected = toggleIsSelected(
-                          _plantList[widget.plantId].isSelected);
+                onPressed: () {
+                  // setState(() {
+                  //   bool isSelected = toggleIsSelected(
+                  //       _plantList[widget.plantId].isSelected);
 
-                      _plantList[widget.plantId].isSelected = isSelected;
-                    });
-                  },
-                  icon: Icon(
-                    Icons.shopping_cart,
-                    color: _plantList[widget.plantId].isSelected == true
-                        ? Colors.white
-                        : Constants.primaryColor,
-                  )),
+                  //   _plantList[widget.plantId].isSelected = isSelected;
+                  // });
+                },
+                icon: const Icon(Icons.shopping_cart, color: Colors.white),
+              ),
               decoration: BoxDecoration(
-                  color: _plantList[widget.plantId].isSelected == true
-                      ? Constants.primaryColor.withOpacity(.5)
-                      : Colors.white,
+                  color: Colors.white,
                   borderRadius: BorderRadius.circular(50),
                   boxShadow: [
                     BoxShadow(
