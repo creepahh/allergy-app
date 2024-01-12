@@ -8,3 +8,4 @@ urlpatterns = [
     path('api/signin/', views.signin, name='signin'),
     path('api/user_allergens/', views.allergens, name='allergens_info'),
 ]
+

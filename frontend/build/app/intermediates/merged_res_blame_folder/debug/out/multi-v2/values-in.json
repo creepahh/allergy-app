@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "D:\\flutter-ui-plant-app\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-in\\values-in.xml",
+            "outputFile": "D:\\allergy-app\\allergy_app\\frontend\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-in\\values-in.xml",
             "map": [
                 {
                     "source": "C:\\Users\\nytuc\\.gradle\\caches\\transforms-3\\3dcd5221de2308daed3258d6630add45\\transformed\\core-1.6.0\\res\\values-in\\values-in.xml",

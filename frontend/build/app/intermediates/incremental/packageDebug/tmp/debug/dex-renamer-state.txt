@@ -1,4 +1,4 @@
-#Fri Jan 12 07:30:55 NPT 2024
-base.0=D\:\\flutter-ui-plant-app\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
+#Fri Jan 12 08:08:23 NPT 2024
+base.0=D\:\\allergy-app\\allergy_app\\frontend\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
 path.0=classes.dex
 renamed.0=classes.dex
