@@ -18,31 +18,6 @@ from rest_framework.renderers import JSONRenderer
 
 import random
 
-
-@api_view(['GET'])
-def fetch_openfood_data(request, barcode):
-    # Make a GET request to the Open Food Facts API
-    api_url = f'https://world.openfoodfacts.net/api/v2/product/{barcode}.json'
-    response = requests.get(api_url)
-
-    if response.status_code == 200:
-        ## Return the JSON response
-        response_json = response.json()
-        ##clean
-        bar_code = response_json.get("code")
-        allergens = response_json.get("allergens")
-        allergens_from_ingredients = response_json.get("allergens_from_ingredients")
-        allergens_hierarchy = response_json.get("allergens_hierarchy")
-        brands = response_json.get("brands")
-        ingredients = response_json.get("ingredients")
-        ingredients_analysis = response_json.get("ingredients_analysis")
-        ingredients_hierarchy = response_json.get("ingredients_hierarchy")
-        nutrient_levels =response_json.get("nutrient_levels")
-
-        return Response(f'{bar_code},{allergens}')
-    else:
-        return Response({'error': 'Failed to fetch data from Open Food Facts API'}, status=response.status_code)
-
 @api_view(['GET'])
 def user_products_by_email(request, email):
     user = get_object_or_404(User, email=email)
@@ -121,5 +96,64 @@ def get_user_detail(request):
         except models.UserAllergy.DoesNotExist:
             return JsonResponse({'error': 'User allergy information not found for the given email'}, status=404)
         
+    else:
+        return JsonResponse({'error': 'Invalid request method'}, status=400)
+
+
+@api_view(['POST'])
+def fetch_openfood_data(request):
+    if request.method == 'POST':
+        # Check if request body is empty
+        if not request.body:
+            return JsonResponse({'error': 'Empty request body'}, status=400)
+
+        # Try to parse JSON data from the request body
+        try:
+            data = json.loads(request.body.decode('utf-8'))
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON'}, status=400)
+
+        # Extract barcode and check if it's provided
+        barcode = data.get('barcode')
+        loggedin_email = data.get('email')
+        if not barcode:
+            return JsonResponse({'error': 'Barcode is required'}, status=400)
+
+        api_url = f'https://world.openfoodfacts.net/api/v2/product/{barcode}.json'
+
+        # Make the external API request
+        try:
+            user = User.objects.get(email=loggedin_email)
+            user_allergy = models.UserAllergy.objects.get(user=user)
+            user_allergens_list = list(allergen.allergens_name for allergen in user_allergy.allergen.all())
+            print(loggedin_email)
+            print(user_allergens_list)
+            response = requests.get(api_url)
+        except requests.RequestException as e:
+            return JsonResponse({'error': str(e)}, status=500)
+
+        # Check if the response from the external API is successful
+        if response.status_code == 200:
+            response_json = response.json()
+            product_data = response_json.get("product", {})
+
+            allergens_hierarchy_cleaned = [allergen.split(":")[1] if ":" in allergen else allergen for allergen in product_data.get("allergens_hierarchy")]
+            print(allergens_hierarchy_cleaned)
+            #find common allergens from user and scanned food
+            common_allergens = list(set(user_allergens_list) & set(allergens_hierarchy_cleaned))
+            result = {
+                'barcode': product_data.get("code"),
+                'allergens': allergens_hierarchy_cleaned,
+                'brands': product_data.get("brands"),
+                'ingredients': product_data.get("ingredients"),
+                'ingredients_analysis': product_data.get("ingredients_analysis"),
+                'ingredients_hierarchy': product_data.get("ingredients_hierarchy"),
+                'nutrient_levels': product_data.get("nutrient_levels"),
+                'hasAllergen': bool(common_allergens := list(set(user_allergens_list) & set(allergens_hierarchy_cleaned)))
+            }
+
+            return JsonResponse({'allergens_list': common_allergens,'all_results':result}, status=200)
+        else:
+            return JsonResponse({'error': 'Failed to fetch data from Open Food Facts API'}, status=response.status_code)
     else:
         return JsonResponse({'error': 'Invalid request method'}, status=400)

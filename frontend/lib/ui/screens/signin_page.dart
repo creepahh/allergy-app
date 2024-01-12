@@ -5,12 +5,16 @@ import 'package:flutter_onboarding/constants.dart';
 import 'package:flutter_onboarding/ui/root_page.dart';
 import 'package:flutter_onboarding/ui/screens/signup_page.dart';
 import 'package:flutter_onboarding/ui/screens/widgets/custom_textfield.dart';
+import 'package:flutter_onboarding/util/globaldata.dart';
 import 'package:flutter_onboarding/util/ip_address.dart';
 import 'package:page_transition/page_transition.dart';
 
 import 'package:http/http.dart' as http;
 
 import 'home_page.dart';
+
+// Access the singleton using this line
+// GlobalData globalData = GlobalData();
 
 class SignIn extends StatefulWidget {
   const SignIn({Key? key}) : super(key: key);
@@ -83,11 +87,9 @@ class _SignInState extends State<SignIn> {
                   );
 
                   if (response.statusCode == 201) {
-                    // Send emailController to WidgetB
-                    WidgetB.setEmail(emailController.text);
+                    GlobalData globalData = GlobalData();
+                    globalData.email = emailController.text;
 
-                    // Call someFunction in WidgetB
-                    WidgetB.someFunction(emailController.text);
                     Navigator.pushReplacement(
                         context,
                         PageTransition(
