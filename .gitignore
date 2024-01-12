@@ -2,3 +2,4 @@ __pycache__/
 package-lock.json
 venv/
 .dart_tool/
+build/
