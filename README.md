@@ -2,10 +2,7 @@
 
 [![logo-size.jpg](https://i.postimg.cc/fTMF2MTj/logo-size.jpg)](https://postimg.cc/JtdPtVXG)
 
-<<<<<<< HEAD
 ## Your vigilant ally in avoiding allergens, empowering you to navigate the world with confidence and steer clear of potential allergic threats.
-
-## Key-features
 
 ### Prevention:
 
@@ -13,7 +10,7 @@
 - Alert users about nutritional values of food items
 - Allow users to create their personal allergen profile
 - Wide dataset of food items using openfoodfacts API
-=======
+
 ## Your trusted partner in allergen awareness, empowering you to navigate the world with confidence and steer clear of potential allergic threats.
 
 ## Key-features
