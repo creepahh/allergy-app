@@ -149,8 +149,10 @@ def fetch_openfood_data(request):
                 'ingredients_analysis': product_data.get("ingredients_analysis"),
                 'ingredients_hierarchy': product_data.get("ingredients_hierarchy"),
                 'nutrient_levels': product_data.get("nutrient_levels"),
+                'imageurl': product_data.get("image_front_small_url"),
                 'hasAllergen': bool(common_allergens := list(set(user_allergens_list) & set(allergens_hierarchy_cleaned)))
             }
+            print("Image URL:", result['imageurl']) 
 
             return JsonResponse({'allergens_list': common_allergens,'all_results':result}, status=200)
         else:

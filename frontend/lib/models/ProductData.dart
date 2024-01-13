@@ -4,6 +4,7 @@ class ProductData {
   final List<Map<String, dynamic>> ingredients;
   final List<String> allergens;
   final bool hasAllergen;
+  final String imageURL;
 
   ProductData({
     required this.barcode,
@@ -11,6 +12,7 @@ class ProductData {
     required this.ingredients,
     required this.allergens,
     required this.hasAllergen,
+    required this.imageURL,
   });
 
   factory ProductData.fromJson(Map<String, dynamic> json) {
@@ -20,6 +22,7 @@ class ProductData {
       ingredients: List<Map<String, dynamic>>.from(json['ingredients'] ?? []),
       allergens: List<String>.from(json['allergens'] ?? []),
       hasAllergen: json['hasAllergen'] ?? false,
+      imageURL: json['imageurl'] ?? '',
     );
   }
 }

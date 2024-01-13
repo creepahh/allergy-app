@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import '../models/ProductData.dart';
@@ -5,9 +7,6 @@ import '../models/ProductData.dart';
 class ProductDetailPage extends StatelessWidget {
   final ProductData productData;
   final String productCategory = "Cookies, Snacks & Candy";
-  final String productImage = "assets/images/profile.jpg";
-
-  // This will come from ProductData - list of allergens present in the product
 
   // List of all possible allergens for display purposes
   final List<String> displayAllergens = [
@@ -22,6 +21,7 @@ class ProductDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(productData.imageURL);
     ThemeData theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
@@ -47,8 +47,8 @@ class ProductDetailPage extends StatelessWidget {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Image.asset(
-                    productImage, //editable
+                  Image.network(
+                    productData.imageURL, //editable
                     width: 150,
                     height: 150,
                     fit: BoxFit.cover,
