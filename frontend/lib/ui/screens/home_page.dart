@@ -11,8 +11,10 @@ import '../../util/ip_address.dart';
 
 // Mapping of allergen names to image paths
 Map<String, String> allergenToImagePath = {
-  'milk': 'assets/images/fish.png',
+  'milk': 'assets/images/milk.png',
   'soy': 'assets/images/fish.png',
+  'fish': 'assets/images/fish.png',
+  'egg': 'assets/image/egg.png'
   // Add more mappings here
 };
 
@@ -153,7 +155,7 @@ class _HomePageState extends State<HomePage> {
                         height: 100, // Adjusted size
                         margin: const EdgeInsets.symmetric(horizontal: 10),
                         child: CircleAvatar(
-                          radius: 75, // Adjusted radius
+                          radius: 80, // Adjusted radius
                           backgroundImage: AssetImage(imagePath),
                           backgroundColor: Colors
                               .transparent, // To remove any default background color
