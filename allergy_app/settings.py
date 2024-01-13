@@ -25,7 +25,11 @@ SECRET_KEY = 'django-insecure-xf6ig2eu2roc#jwbb575#7i+tz(h^y3l)71-4x=j_63mb89o31
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [ '192.168.1.9', 'localhost', '127.0.0.1', '192.168.1.11']
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend'
+     ,'backend.custom_auth_backend.EmailBackend']
 
 
 # Application definition
@@ -37,9 +41,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'backend',
+    'rest_framework',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -47,6 +55,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+     'backend.custom_middleware.AdminAuthMiddleware',
 ]
 
 ROOT_URLCONF = 'allergy_app.urls'
